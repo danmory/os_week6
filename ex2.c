@@ -22,6 +22,10 @@ void sort(int arr1[], int arr2[], int N){
 /* FINDING WAITING, COMPLETION AND TURNAROUND TIMES */
 void findTimes(int burstTimes[], int arrivalTimes[], int waitingTimes[], int completionTimes[], int turnaroundTimes[], int N){
     sort(arrivalTimes, burstTimes, N);
+    int isDone[N];
+    for (int i = 0; i < N; ++i) {
+        isDone[i] = 0;
+    }
     for (int i = 0; i < N; ++i) {
         completionTimes[i] = arrivalTimes[i] + burstTimes[i];
         for (int j = 0; j < i; ++j) {
@@ -79,9 +83,6 @@ int main() {
         printf("#%d process burst time: ", i);
         scanf("%d", &burstTimes[i]);
     }
-
-    /* SORT PROCESSES BY ARRIVAL DATA */
-    sort(arrivalTimes, burstTimes, N);
 
     /* TO FIND OUT: */
     int completionTimes[N];

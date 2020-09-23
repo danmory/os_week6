@@ -21,13 +21,26 @@ void sort(int arr1[], int arr2[], int N){
 
 /* FINDING WAITING, COMPLETION AND TURNAROUND TIMES */
 void findTimes(int burstTimes[], int arrivalTimes[], int waitingTimes[], int completionTimes[], int turnaroundTimes[], int N){
-    waitingTimes[0] = 0;
-    completionTimes[0] = burstTimes[0];
-    turnaroundTimes[0] = burstTimes[0];
-    for (int i = 1; i < N; ++i) {
-        waitingTimes[i] = completionTimes[i-1] - arrivalTimes[i];
-        completionTimes[i] = completionTimes[i-1] + burstTimes[i];
+    /* SORT PROCESSES BY ARRIVAL DATA */
+    sort(arrivalTimes, burstTimes, N);
+    for (int i = 0; i < N; ++i) {
+        completionTimes[i] = arrivalTimes[i];
+    }
+    int time = arrivalTimes[0];
+    for (int i = 0; i < N; ++i) {
+        if (time < arrivalTimes[i]){
+            time = arrivalTimes[i];
+            completionTimes[i] += burstTimes[i];
+            time += burstTimes[i];
+        }else{
+            completionTimes[i] = time + burstTimes[i];
+            time += burstTimes[i];
+        }
+    }
+
+    for (int i = 0; i < N; ++i) {
         turnaroundTimes[i] = completionTimes[i] - arrivalTimes[i];
+        waitingTimes[i] = turnaroundTimes[i] - burstTimes[i];
     }
 }
 
@@ -68,9 +81,6 @@ int main() {
         printf("#%d process burst time: ", i);
         scanf("%d", &burstTimes[i]);
     }
-
-    /* SORT PROCESSES BY ARRIVAL DATA */
-    sort(arrivalTimes, burstTimes, N);
 
     /* TO FIND OUT: */
     int completionTimes[N];
