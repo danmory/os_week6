@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <stdlib.h>
 
 void swap(int *a, int *b){
     int temp = *a;
@@ -56,6 +57,9 @@ int main() {
     printf("Number of processes: ");
     scanf("%d", &N);
     printf("\n");
+    if (N == 0){
+        exit(0);
+    }
     int arrivalTimes[N];
     int burstTimes[N];
     for (int i = 0; i < N; ++i) {
