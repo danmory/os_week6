@@ -20,7 +20,61 @@ void sort(int arr1[], int arr2[], int N){
 
 /* FINDING WAITING, COMPLETION AND TURNAROUND TIMES */
 void findTimes(int burstTimes[], int arrivalTimes[], int waitingTimes[], int completionTimes[], int turnaroundTimes[], int N, int quantum){
+    int isDone[N]; // is current process terminated
+    int remainingBurstTimes[N]; // remaining execution time of a process
+    int time = arrivalTimes[0]; // time at the current moment
+    int doneProcesses = 0; // how many processes are terminated
 
+    for (int i = 0; i < N; ++i) {
+        isDone[i] = 0;
+        remainingBurstTimes[i] = burstTimes[i];
+    }
+    for (int i = 0; i < N; ++i) {
+        completionTimes[i] = arrivalTimes[i];
+    }
+
+    int i = 0;
+    while (1){
+        /* New round */
+        if (i == N){
+            i = 0;
+            continue;
+        }
+        /* If all processes are done then exit*/
+        if (doneProcesses == N){
+            break;
+        }
+
+        if (isDone[i] == 0) {
+            /* If process is not arrived yet*/
+            if (arrivalTimes[i] > time){
+                i = 0;
+                continue;
+            }
+            /* If process exists */
+            if (remainingBurstTimes[i] <= quantum) {
+                doneProcesses++;
+                time += remainingBurstTimes[i];
+                completionTimes[i] = time;
+                remainingBurstTimes[i] = 0;
+                isDone[i] = 1;
+                i++;
+
+            }else{
+                remainingBurstTimes[i] -= quantum;
+                time += quantum;
+                completionTimes[i] = time;
+                i++;
+            }
+        }else{
+            i++;
+        }
+    }
+
+    for (int j = 0; j < N; ++j) {
+        turnaroundTimes[j] = completionTimes[j] - arrivalTimes[j];
+        waitingTimes[j] = turnaroundTimes[j] - burstTimes[j];
+    }
 }
 
 /* AVERAGE VALUES */

@@ -1,0 +1,6 @@
+FCFS:
+The more heavy processes at the beginning, the worse the performance of the rest
+SJF:
+The more heavy-weight processes, the worse the performance
+RR:
+The performance largely depends on quantum. If quantum too big, then there are problems like in FCFS. If quantum is too small, then there are problem like in SJF.
