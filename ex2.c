@@ -24,17 +24,16 @@ void findTimes(int burstTimes[], int arrivalTimes[], int waitingTimes[], int com
     sort(arrivalTimes, burstTimes, N);
     int isDone[N];
     for (int i = 0; i < N; ++i) {
-        isDone[i] = 0;
-    }
-    for (int i = 0; i < N; ++i) {
         completionTimes[i] = arrivalTimes[i] + burstTimes[i];
         for (int j = 0; j < i; ++j) {
-            if (burstTimes[i] >= burstTimes[j]) {
-                if (completionTimes[i] < completionTimes[j] + burstTimes[i]){
-                    completionTimes[i] = completionTimes[j] + burstTimes[i];
+            if (arrivalTimes[i] < completionTimes[j]) {
+                if (burstTimes[i] >= burstTimes[j]) {
+                    if (completionTimes[i] < completionTimes[j] + burstTimes[i]) {
+                        completionTimes[i] = completionTimes[j] + burstTimes[i];
+                    }
+                } else {
+                    completionTimes[j] += burstTimes[i];
                 }
-            }else{
-                completionTimes[j] += burstTimes[i];
             }
         }
     }
