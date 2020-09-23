@@ -21,6 +21,8 @@ void sort(int arr1[], int arr2[], int N){
 
 /* FINDING WAITING, COMPLETION AND TURNAROUND TIMES */
 void findTimes(int burstTimes[], int arrivalTimes[], int waitingTimes[], int completionTimes[], int turnaroundTimes[], int N, int quantum){
+    /* SORT PROCESSES BY ARRIVAL DATA */
+    sort(arrivalTimes, burstTimes, N);
     int isDone[N]; // is current process terminated
     int remainingBurstTimes[N]; // remaining execution time of a process
     int time = arrivalTimes[0]; // time at the current moment
@@ -48,6 +50,16 @@ void findTimes(int burstTimes[], int arrivalTimes[], int waitingTimes[], int com
 
         if (isDone[i] == 0) {
             /* If process is not arrived yet*/
+            int doneAlready = 0;
+            for (int j = 0; j < i; ++j) {
+                if (isDone[j] == 1) doneAlready++;
+            }
+            if (doneAlready == i && doneAlready != 0){
+                if (time < arrivalTimes[i]){
+                    time = arrivalTimes[i];
+                }
+            }
+
             if (arrivalTimes[i] > time){
                 i = 0;
                 continue;
@@ -119,9 +131,6 @@ int main() {
     int quantum;
     printf("quantum: ");
     scanf("%d", &quantum);
-
-    /* SORT PROCESSES BY ARRIVAL DATA */
-    sort(arrivalTimes, burstTimes, N);
 
     /* TO FIND OUT: */
     int completionTimes[N];
